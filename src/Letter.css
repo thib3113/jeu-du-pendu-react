@@ -1,0 +1,9 @@
+.letter{
+    background: lightgray;
+    padding: 5px;
+    margin: 10px;
+}
+
+.letter.used{
+    background: darkgray;
+}
