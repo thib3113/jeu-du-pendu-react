@@ -1,0 +1,19 @@
+$letter-size: 50px;
+
+.letter{
+  background: lightgray;
+  margin: 10px;
+  height: $letter-size;
+  width: $letter-size;
+  line-height:$letter-size;
+  text-align: center;
+  cursor: pointer;
+  text-transform: uppercase;
+
+  &:hover{
+    background: darkgray;
+  }
+  &.selected{
+    background: gray;
+  }
+}

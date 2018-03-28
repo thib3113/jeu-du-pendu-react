@@ -1,0 +1,13 @@
+//include bootstrap material design + bootstrap
+@import "~bootstrap-material-design/scss/core";
+
+.keyboard{
+  max-width: 450px;
+  .letter{
+    cursor: pointer;
+  }
+}
+
+.hangmanLetters{
+  text-align: center;
+}
