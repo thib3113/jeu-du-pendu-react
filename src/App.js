@@ -879,10 +879,10 @@ class App extends Component {
     ];
 
     state = {
-        currentWord:"",
-        lettersMissing:1,//0 == win
-        currentKeysPressed:[],
-        score:0
+        currentWord       : "",
+        lettersMissing    : 1,//0 == win
+        currentKeysPressed: [],
+        score             : 0
     };
 
     resetGame() {
@@ -923,18 +923,19 @@ class App extends Component {
                 </div>
                 {/*d-none*/}
                 <div className="container">
-                    <div className={`col-sm keyBoard ${this.state.lettersMissing<=0? "d-none":""}`}>
+                    <div className={`col-sm keyBoard ${this.state.lettersMissing <= 0 ? "d-none" : ""}`}>
                         {this.letterRows.map((letters, index) => (
                             <div key={index} className="row">
                                 {letters.map((letter) => (
-                                    <KeyboardLetter key={letter} onClick={this.handleClick.bind(this)} letter={letter}
+                                    <KeyboardLetter key={letter} onClick={this.handleClick} letter={letter}
                                                     selected={this.state.currentKeysPressed.includes(letter)}/>
                                 ))}
                             </div>
                         ))}
                     </div>
-                    <div className={`col-sm text-center ${this.state.lettersMissing > 0? "d-none":""}`}>
-                        <button className="btn btn-outline-success" onClick={()=>{this.resetGame()}}>Recommencer</button>
+                    <div className={`col-sm text-center ${this.state.lettersMissing > 0 ? "d-none" : ""}`}>
+                        <button className="btn btn-outline-success" onClick={() => {this.resetGame();}}>Recommencer
+                        </button>
                     </div>
                 </div>
             </div>
@@ -950,13 +951,14 @@ class App extends Component {
 
     tryLetter(letter) {
         //the game is already finished ?
-        if(this.state.lettersMissing <= 0)
+        if (this.state.lettersMissing <= 0)
             return;
 
         let score = this.state.score;
         if (this.state.currentWord.includes(letter)) {
             if (!this.state.currentKeysPressed.includes(letter)) {
-                this.setState({lettersMissing: this.state.lettersMissing - (this.state.currentWord.split(letter).length-1)});
+                this.setState(
+                    {lettersMissing: this.state.lettersMissing - (this.state.currentWord.split(letter).length - 1)});
                 score++;
             }
         }
@@ -971,9 +973,10 @@ class App extends Component {
         this.setState({score: score});
     }
 
-    handleClick(letter) {
+    //arrow fx for binding
+    handleClick = letter => {
         this.tryLetter(letter.toLowerCase());
-    }
+    };
 
     handleKeyboardPress(keyBoardEvent) {
         let letter = keyBoardEvent.key.toLowerCase();
