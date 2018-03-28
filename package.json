@@ -12,16 +12,21 @@
     "react-scripts": "1.1.1"
   },
   "devDependencies": {
+    "gh-pages": "^1.1.0",
     "gulp": "^3.9.1",
     "gulp-batch": "^1.0.5",
     "gulp-sass": "^3.2.1",
     "gulp-watch": "^5.0.0",
     "node-sass-tilde-importer": "^1.0.2"
   },
+  "homepage": "http://thib3113.github.io/jeu-du-pendu-react",
   "scripts": {
+    "postinstall": "gulp",
     "start": "react-scripts start",
-    "build": "npm i && gulp && react-scripts build",
+    "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   }
 }

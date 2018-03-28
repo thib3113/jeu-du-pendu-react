@@ -882,10 +882,10 @@ class App extends Component {
         currentWord:"",
         lettersMissing:1,//0 == win
         currentKeysPressed:[],
-        score:0,
+        score:0
     };
 
-    resetState() {
+    resetGame() {
         let word = this.getRandomWord();
         this.setState({
                           currentWord       : word,
@@ -896,7 +896,7 @@ class App extends Component {
     }
 
     componentDidMount() {
-        this.resetState();
+        this.resetGame();
         document.addEventListener("keypress", (event) => this.handleKeyboardPress(event));
     }
 
@@ -934,7 +934,7 @@ class App extends Component {
                         ))}
                     </div>
                     <div className={`col-sm text-center ${this.state.lettersMissing > 0? "d-none":""}`}>
-                        <button className="btn btn-outline-success" onClick={()=>{this.resetState()}}>Recommencer</button>
+                        <button className="btn btn-outline-success" onClick={()=>{this.resetGame()}}>Recommencer</button>
                     </div>
                 </div>
             </div>
