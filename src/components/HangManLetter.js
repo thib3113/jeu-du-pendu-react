@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import "../stylesheets/css/HangManLetter.css"
+import "../stylesheets/scss/HangManLetter.scss"
 
 export default class HangManLetter extends React.Component{
     static propTypes = {
@@ -11,7 +11,7 @@ export default class HangManLetter extends React.Component{
 
     render(){
         return (
-            <span className="col-md hangman-letter">
+            <span className="col-sm hangman-letter">
                 {this.props.selected? this.props.letter: "_"}
             </span>
         )

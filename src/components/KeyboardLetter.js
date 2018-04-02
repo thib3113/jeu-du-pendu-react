@@ -1,7 +1,7 @@
 import React     from "react";
 import PropTypes from "prop-types";
 
-import '../stylesheets/css/KeyboardLetter.css';
+import '../stylesheets/scss/KeyboardLetter.scss';
 
 export default class KeyboardLetter extends React.Component {
 
