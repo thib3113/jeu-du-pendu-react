@@ -6,6 +6,7 @@ import HangManLetter      from "./HangManLetter";
 import KeyboardLetter     from "./KeyboardLetter";
 
 import "./../stylesheets/scss/HangMan.scss";
+import Users              from "./Users";
 
 let baseCharCode = "a".charCodeAt(0);
 let numberOfLettersByLines = 13;
@@ -75,6 +76,7 @@ export default class Hangman extends Component {
                             <div className="score-container">
                                 Score : {this.state.score}
                             </div>
+                            <Users />
                             <div className="hangman-container"/>
                             <div className="hangmanLetters">
                                 {this.state.currentWord.split("").map(((letter, index) => (
@@ -157,12 +159,15 @@ export default class Hangman extends Component {
         this.tryLetter(letter.toLowerCase());
     };
 
-    handleKeyboardPress(keyBoardEvent) {
-        let letter = keyBoardEvent.key.toLowerCase();
-        //check if it's an ASCII char
-        if (letter.charCodeAt(0) > 122 || letter.charCodeAt(0) < 97)
+    handleKeyboardPress({target, charCode, key:letter}) {
+        //check if keyBoard event go in an input
+        if(target instanceof HTMLInputElement && target.type === 'text')
             return;
 
-        this.tryLetter(letter);
+        //check if it's a char, and if it's an ASCII char
+        if (charCode > 122 || charCode < 97)
+            return;
+
+        this.tryLetter(letter.toLowerCase());
     }
 }
