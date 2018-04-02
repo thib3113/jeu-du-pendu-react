@@ -1,11 +1,11 @@
-import React, {Component} from "react";
 import shuffle            from "lodash.shuffle";
+import React, {Component} from "react";
 import {connect}          from "react-redux";
 import {itemsFetchData}   from "../actions";
-import HangManLetter      from "./HangManLetter";
-import KeyboardLetter     from "./KeyboardLetter";
 
 import "./../stylesheets/scss/HangMan.scss";
+import HangManLetter      from "./HangManLetter";
+import KeyboardLetter     from "./KeyboardLetter";
 import Users              from "./Users";
 
 let baseCharCode = "a".charCodeAt(0);
@@ -76,7 +76,6 @@ export default class Hangman extends Component {
                             <div className="score-container">
                                 Score : {this.state.score}
                             </div>
-                            <Users />
                             <div className="hangman-container"/>
                             <div className="hangmanLetters">
                                 {this.state.currentWord.split("").map(((letter, index) => (
@@ -102,6 +101,11 @@ export default class Hangman extends Component {
                             </button>
                         </div>
                     </div>
+                    <div className="container">
+                        <div className="col-md-4">
+                            <Users/>
+                        </div>
+                    </div>
                 </div>
             );
         }
@@ -125,6 +129,9 @@ export default class Hangman extends Component {
 
     getRandomWord(newWords = this.props.words) {
         const candidates = shuffle(newWords);
+
+        if(candidates.length === 0)
+            throw new Error("no words received !!");
 
         return candidates.pop().toLowerCase();
         // return "test";
@@ -159,9 +166,9 @@ export default class Hangman extends Component {
         this.tryLetter(letter.toLowerCase());
     };
 
-    handleKeyboardPress({target, charCode, key:letter}) {
+    handleKeyboardPress({target, charCode, key: letter}) {
         //check if keyBoard event go in an input
-        if(target instanceof HTMLInputElement && target.type === 'text')
+        if (target instanceof HTMLInputElement && target.type === "text")
             return;
 
         //check if it's a char, and if it's an ASCII char
