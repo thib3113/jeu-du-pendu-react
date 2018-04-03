@@ -3,14 +3,15 @@ import React, {Component}         from "react";
 import {connect}                  from "react-redux";
 import {DELETE_USER, UPDATE_USER} from "../constants/action-types";
 
-// import "./../stylesheets/scss/User.scss";
+import "./../stylesheets/scss/User.scss";
 @connect()
 export default class User extends Component {
     static propTypes = {
         name : PropTypes.string.isRequired,
         uuid : PropTypes.string.isRequired,
         score: PropTypes.number.isRequired,
-        added:PropTypes.bool.isRequired
+        added:PropTypes.bool.isRequired,
+        hisTurn:PropTypes.bool.isRequired
     };
 
     state = {
@@ -22,14 +23,14 @@ export default class User extends Component {
 
     render() {
         return (
-            <tr>
+            <tr className={`${this.props.hisTurn && "hisTurn"}`}>
                 <th onDoubleClick={this.onDoubleClickName}>{this.state.updating ? <form onSubmit={this.submitName}>
                                                                                     <input placeholder="username"
                                                                                            onBlur={this.onBlurName}
-                                                                                           ref={(field) => { this.nameField = field; }} defaultValue={this.props.name}/></form>
+                                                                                           ref={(field) => { field != null && field.focus(); this.nameField = field; }} defaultValue={this.props.name}/></form>
                                                                                 : this.props.name}</th>
                 <td>{this.props.score}</td>
-                <td>{this.props.added && <span onClick={this.deleteUser} title="supprimer l'utilisateur">X</span>}</td>
+                <td>{this.props.added && <span className="pointer" onClick={this.deleteUser} title="supprimer l'utilisateur">X</span>}</td>
             </tr>
         );
     }

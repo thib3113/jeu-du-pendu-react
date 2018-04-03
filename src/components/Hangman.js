@@ -4,7 +4,9 @@ import {connect}          from "react-redux";
 import {itemsFetchData}   from "../actions";
 
 import "./../stylesheets/scss/HangMan.scss";
+import {NEXT_TURN}        from "../constants/action-types";
 import HangManLetter      from "./HangManLetter";
+import HangmanSVG         from "./HangmanSVG";
 import KeyboardLetter     from "./KeyboardLetter";
 import Users              from "./Users";
 
@@ -12,11 +14,12 @@ let baseCharCode = "a".charCodeAt(0);
 let numberOfLettersByLines = 13;
 
 @connect((store) => {
+    let words = store.words;
     return {
-        words       : store.words,
-        wordsLoading: store.loading,
-        hasError    : store.errors.length > 0,
-        errors      : store.errors
+        words       : words.words,
+        wordsLoading: words.loading,
+        hasError    : words.errors.length > 0,
+        errors      : words.errors
     };
 })
 export default class Hangman extends Component {
@@ -32,8 +35,10 @@ export default class Hangman extends Component {
         currentWord       : "",
         lettersMissing    : 1,//0 == win
         currentKeysPressed: [],
-        score             : 0
+        fails             : 0
     };
+
+    maxFails = 10;
 
     resetGame(newWords) {
 
@@ -48,7 +53,7 @@ export default class Hangman extends Component {
                           currentWord       : word,
                           lettersMissing    : word.length,
                           currentKeysPressed: [],
-                          score             : 0
+                          fails             : 0
                       });
     }
 
@@ -73,10 +78,9 @@ export default class Hangman extends Component {
                 <div>
                     <div className="container">
                         <div className="container">
-                            <div className="score-container">
-                                Score : {this.state.score}
+                            <div className="hangman-container">
+                                <HangmanSVG fails={this.state.fails}/>
                             </div>
-                            <div className="hangman-container"/>
                             <div className="hangmanLetters">
                                 {this.state.currentWord.split("").map(((letter, index) => (
                                     <HangManLetter letter={letter} key={index}
@@ -86,7 +90,7 @@ export default class Hangman extends Component {
                         </div>
                     </div>
                     <div className="container">
-                        <div className={`col-sm keyBoard ${this.state.lettersMissing <= 0 ? "d-none" : ""}`}>
+                        <div className={`col-sm keyBoard ${this.state.lettersMissing <= 0 || this.state.fails >= this.maxFails ? "d-none": ""}`}>
                             {this.letterRows.map((letters, index) => (
                                 <div key={index} className="row">
                                     {letters.map((letter) => (
@@ -96,8 +100,8 @@ export default class Hangman extends Component {
                                 </div>
                             ))}
                         </div>
-                        <div className={`col-sm text-center ${this.state.lettersMissing > 0 ? "d-none" : ""}`}>
-                            <button className="btn btn-outline-success" onClick={() => {this.resetGame();}}>Recommencer
+                        <div className={`col-sm text-center ${this.state.lettersMissing <= 0 || this.state.fails >= this.maxFails ? "": "d-none"}`}>
+                            <button className={`btn btn-outline-${this.state.fails >= this.maxFails?"danger":"success"}`} onClick={() => {this.resetGame();}}>Recommencer
                             </button>
                         </div>
                     </div>
@@ -130,7 +134,7 @@ export default class Hangman extends Component {
     getRandomWord(newWords = this.props.words) {
         const candidates = shuffle(newWords);
 
-        if(candidates.length === 0)
+        if (candidates.length === 0)
             throw new Error("no words received !!");
 
         return candidates.pop().toLowerCase();
@@ -142,23 +146,41 @@ export default class Hangman extends Component {
         if (this.state.lettersMissing <= 0)
             return;
 
-        let score = this.state.score;
+        let score = 0;
+        let fails = this.state.fails;
+        let lettersMissing = this.state.lettersMissing - (this.state.currentWord.split(letter).length - 1);
         if (this.state.currentWord.includes(letter)) {
             if (!this.state.currentKeysPressed.includes(letter)) {
                 this.setState(
-                    {lettersMissing: this.state.lettersMissing - (this.state.currentWord.split(letter).length - 1)});
+                    {lettersMissing});
                 score++;
             }
         }
         else if (this.state.currentKeysPressed.includes(letter)) {
             score -= 2;
+            fails += 1;
         }
-        else
+        else {
             score--;
+            fails += 1;
+        }
 
-        this.state.currentKeysPressed.push(letter);
+        this.setState({
+                          fails,
+                          currentKeysPressed: [...this.state.currentKeysPressed, letter]
+                      });
 
-        this.setState({score: score});
+        if(fails === 10)
+            this.setState({
+                              currentKeysPressed:this.letterRows[0].concat(this.letterRows[1])
+                          });
+
+        // this.setState({score: score});
+        // console.log(lettersMissing);
+        this.props.dispatch({
+                                win: lettersMissing === 0,
+                                type      : NEXT_TURN
+                            });
     }
 
     //arrow fx for binding

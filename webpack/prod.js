@@ -17,6 +17,7 @@ const config = {
     entry       : path.resolve(__dirname, '..', 'src', 'index.js'),
     output      : {
         path    : path.resolve(__dirname, '..', 'build'),
+        chunkFilename: "[name].bundle.js",
         filename: 'bundle.js'
     },
     optimization: {
