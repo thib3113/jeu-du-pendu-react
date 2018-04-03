@@ -1,5 +1,5 @@
-import React     from "react";
 import PropTypes from "prop-types";
+import React     from "react";
 
 export default class HangmanSVG extends React.Component {
     static propTypes = {
@@ -30,44 +30,46 @@ export default class HangmanSVG extends React.Component {
     dropBodyTimeout = null;
 
     render() {
-        if(this.props.fails === 10){
-            if(this.dropBodyTimeout != null) clearTimeout(this.dropBodyTimeout);
+        if (this.props.fails === 10) {
+            if (this.dropBodyTimeout != null) clearTimeout(this.dropBodyTimeout);
             this.dropBodyTimeout = setTimeout(() => this.dropBody(), 500);
         }
         return (
             <svg id="hangmanSVG" height="400" width="400">
-                <g className="body">
-                    {this.props.fails > 4 && (
-                        <g id="head">
-                            <circle cx="200" cy="80" r="20" stroke="black" strokeWidth="4" fill="white"/>
-                            <g className="rEyes">
-                                <circle cx="193" cy="80" r="4"/>
-                                <circle cx="207" cy="80" r="4"/>
+                {this.props.fails > 0 && (
+                    <g className="body">
+                        {this.props.fails > 4 && (
+                            <g id="head">
+                                <circle cx="200" cy="80" r="20" stroke="black" strokeWidth="4" fill="white"/>
+                                <g className="rEyes">
+                                    <circle cx="193" cy="80" r="4"/>
+                                    <circle cx="207" cy="80" r="4"/>
+                                </g>
+                                <g className="xEyes hide">
+                                    <line x1="190" y1="78" x2="196" y2="84"/>
+                                    <line x1="204" y1="78" x2="210" y2="84"/>
+                                    <line x1="190" y1="84" x2="196" y2="78"/>
+                                    <line x1="204" y1="84" x2="210" y2="78"/>
+                                </g>
                             </g>
-                            <g className="xEyes hide">
-                                <line x1="190" y1="78" x2="196" y2="84"/>
-                                <line x1="204" y1="78" x2="210" y2="84"/>
-                                <line x1="190" y1="84" x2="196" y2="78"/>
-                                <line x1="204" y1="84" x2="210" y2="78"/>
-                            </g>
-                        </g>
-                    )}
-                    {this.props.fails > 5 && (
-                        <line className="body" x1="200" y1="100" x2="200" y2="150"/>
-                    )}
-                    {this.props.fails > 6 && (
-                        <line className="armL" x1="200" y1="120" x2="170" y2="140"/>
-                    )}
-                    {this.props.fails > 7 && (
-                        <line className="armR" x1="200" y1="120" x2="230" y2="140"/>
-                    )}
-                    {this.props.fails > 8 && (
-                        <line className="legL" x1="200" y1="150" x2="180" y2="190"/>
-                    )}
-                    {this.props.fails > 9 && (
-                        <line className="legR" x1="200" y1="150" x2="220" y2="190"/>
-                    )}
-                </g>
+                        )}
+                        {this.props.fails > 5 && (
+                            <line className="body" x1="200" y1="100" x2="200" y2="150"/>
+                        )}
+                        {this.props.fails > 6 && (
+                            <line className="armL" x1="200" y1="120" x2="170" y2="140"/>
+                        )}
+                        {this.props.fails > 7 && (
+                            <line className="armR" x1="200" y1="120" x2="230" y2="140"/>
+                        )}
+                        {this.props.fails > 8 && (
+                            <line className="legL" x1="200" y1="150" x2="180" y2="190"/>
+                        )}
+                        {this.props.fails > 9 && (
+                            <line className="legR" x1="200" y1="150" x2="220" y2="190"/>
+                        )}
+                    </g>
+                )}
                 {this.props.fails > 0 && (
                     <line className="floor" x1="10" y1="250" x2="150" y2="250"/>
                 )}

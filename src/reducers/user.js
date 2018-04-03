@@ -42,7 +42,6 @@ export default (state = initialState, action) => {
                 index = 0;
 
             return state.map((user, i) => {
-                console.log(action);
                 let score = action.win? user.score+1 : user.score;
                 if (i === index)
                     return {...user, hisTurn:true};
