@@ -154,3 +154,5 @@ $RECYCLE.BIN/
 /build/
 
 *.zip
+yarn.lock
+package-lock.json

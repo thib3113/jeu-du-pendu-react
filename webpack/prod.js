@@ -1,10 +1,10 @@
 const path = require('path');
 const webpack = require('webpack');
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin')
 
 const HtmlWebpackConfig = new HtmlWebpackPlugin({
                                                     template: path.resolve(__dirname, "..", "public", "index.html"),
@@ -22,11 +22,12 @@ const config = {
     },
     optimization: {
         minimizer: [
-            new UglifyJsPlugin({
-                                   cache    : true,
-                                   parallel : true,
-                                   sourceMap: true // set to true if you want JS source maps
-                               }),
+            new TerserPlugin({
+              parallel: true,
+              terserOptions: {
+                ecma: 6
+              }
+            }),
             new OptimizeCSSAssetsPlugin({})
         ]
     },
